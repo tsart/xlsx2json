@@ -1,0 +1,37 @@
+{
+  "name": "xlsx2json",
+  "version": "1.0.0",
+  "description": "XLSX to JSON parser",
+  "main": "parser.js",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tsart/xlsx2json.git"
+  },
+  "keywords": [
+    "xlsx",
+    "json",
+    "converter",
+    "parser"
+  ],
+  "author": "Serge Artishev",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tsart/xlsx2json/issues"
+  },
+  "homepage": "https://github.com/tsart/xlsx2json#readme",
+  "dependencies": {
+    "xlsx": "^0.16.1"
+  },
+  "devDependencies": {
+    "@types/jest": "^25.2.3",
+    "@types/node": "^14.0.5",
+    "jest": "^26.0.1",
+    "ts-jest": "^26.0.0",
+    "typescript": "^3.9.3"
+  }
+}
