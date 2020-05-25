@@ -1,5 +1,6 @@
 export interface ResultObject {
   name: string;
+  description?: string;
   columns: string[];
   dataset: string;
 }
@@ -20,6 +21,7 @@ export interface InputFormat {
   domain: string;
   fileName: string;
   fileOptions: {};
+  description?: string;
   resultObjects: ResultObject[];
   cells?: Cell[];
   datasets?: Dataset[];

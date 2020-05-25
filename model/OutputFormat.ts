@@ -14,10 +14,12 @@ export interface Column {
 export interface OutputFormat {
   domain: string;
   objectName: string;
+  description?: string;
   columns: Column[];
   source: {
     type: 'Excel';
     fileName: string;
+    description?: string;
   };
   data: any[];
 }

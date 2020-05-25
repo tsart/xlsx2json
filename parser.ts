@@ -1,12 +1,14 @@
 import { read, WorkBook } from 'xlsx';
 import * as fs from 'fs';
+import { Settings } from './util/config';
 import { InputFormat, ResultObject, Dataset, Cell, ExcelDataType } from './model/InputFormat.js';
 import { OutputFormat, Column, ColumnType } from './model/OutputFormat.js';
 import { readDataset, readDatasetMeta, readCell, readCellMeta } from './util/readers';
 
-export const parseXLSX = (settings, inputBlob: any): OutputFormat[] => {
+export const parseXLSX = (config, inputBlob: any): OutputFormat[] => {
   // let fileName: string = 'Pending.xlsx';
   let Output: OutputFormat[] = [];
+  let settings = new Settings(config);
   let fileOptions = settings.getFileOptions();
   const wb: WorkBook = read(inputBlob, fileOptions);
 
@@ -15,7 +17,8 @@ export const parseXLSX = (settings, inputBlob: any): OutputFormat[] => {
     let res: OutputFormat = {
       domain: settings.getDomainOptions(),
       objectName: object.name,
-      source: { type: 'Excel', fileName: settings.fileName },
+      description: object.description,
+      source: { type: 'Excel', fileName: config.fileName, description: config.description },
       columns: [],
       data: [],
     };

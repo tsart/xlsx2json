@@ -1,18 +1,19 @@
 import * as parser from '../parser';
 import * as fs from 'fs';
 import { InputFormat } from '../model/InputFormat';
-import { Settings } from '../util/config';
 import { OutputFormat } from '../model/OutputFormat';
 
 let config: InputFormat = {
   domain: 'Excel',
   fileName: '__test__/xlsx/with_header_information_and_keys_row.xlsx',
   fileOptions: { cellDates: true },
+  description: 'source description',
   resultObjects: [
     {
       name: 'withHeaderInformationAndKeysRow',
       columns: ['ReportTitle', 'ReportDate'],
       dataset: 'Table',
+      description: 'recordset description',
     },
   ],
   cells: [
@@ -24,21 +25,18 @@ let config: InputFormat = {
 
 describe('Excel parser', () => {
   it('should return defined file object', async () => {
-    let settings = new Settings(config);
-    let blob: any = loadFile(settings.get('fileName'));
+    let blob: any = fs.readFileSync(config.fileName);
     expect(blob.length).toBeGreaterThan(0);
   });
   it('should return defined JSON object', async () => {
-    let settings = new Settings(config);
-    let blob: any = loadFile(settings.get('fileName'));
-    let res: OutputFormat[] = parser.parseXLSX(settings, blob);
+    let blob: any = fs.readFileSync(config.fileName);
+    let res: OutputFormat[] = parser.parseXLSX(config, blob);
     expect(res).toBeDefined();
     expect(res.length).toBe(1);
   });
   it('should return defined JSON object with data', async () => {
-    let settings = new Settings(config);
-    let blob: any = loadFile(settings.get('fileName'));
-    let res: OutputFormat[] = parser.parseXLSX(settings, blob);
+    let blob: any = fs.readFileSync(config.fileName);
+    let res: OutputFormat[] = parser.parseXLSX(config, blob);
     expect(res[0].data).toStrictEqual([
       {
         ReportDate: new Date('2020-05-19T12:00:00.000Z'),
@@ -57,9 +55,8 @@ describe('Excel parser', () => {
     ]);
   });
   it('should return defined JSON object with metadata', async () => {
-    let settings = new Settings(config);
-    let blob: any = loadFile(settings.get('fileName'));
-    let res: OutputFormat[] = parser.parseXLSX(settings, blob);
+    let blob: any = fs.readFileSync(config.fileName);
+    let res: OutputFormat[] = parser.parseXLSX(config, blob);
     expect(res[0].columns.map((item) => item.name)).toStrictEqual([
       'ReportTitle',
       'ReportDate',
@@ -69,15 +66,19 @@ describe('Excel parser', () => {
     ]);
   });
   it('should return defined JSON object with column types', async () => {
-    let settings = new Settings(config);
-    let blob: any = loadFile(settings.get('fileName'));
-    let res: OutputFormat[] = parser.parseXLSX(settings, blob);
+    let blob: any = fs.readFileSync(config.fileName);
+    let res: OutputFormat[] = parser.parseXLSX(config, blob);
     expect(res[0].columns.find((col) => col.name === 'ReportDate').type).toBe('date');
     expect(res[0].columns.find((col) => col.name === 'column-C').type).toBe('string');
   });
+  it('should return defined JSON object with source description', async () => {
+    let blob: any = fs.readFileSync(config.fileName);
+    let res: OutputFormat[] = parser.parseXLSX(config, blob);
+    expect(res[0].source.description).toBe('source description');
+  });
+  it('should return defined JSON object with recordset description', async () => {
+    let blob: any = fs.readFileSync(config.fileName);
+    let res: OutputFormat[] = parser.parseXLSX(config, blob);
+    expect(res[0].description).toBe('recordset description');
+  });
 });
-
-const loadFile = (fileName: string): any => {
-  let inputBlob = fs.readFileSync(fileName);
-  return inputBlob;
-};
