@@ -2,7 +2,7 @@
   "name": "xlsx2json",
   "version": "1.0.0",
   "description": "XLSX to JSON parser",
-  "main": "parser.js",
+  "main": "main.js",
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w",
