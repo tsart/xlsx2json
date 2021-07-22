@@ -27,7 +27,7 @@
   },
   "homepage": "https://github.com/tsart/xlsx2json#readme",
   "dependencies": {
-    "xlsx": "^0.16.1"
+    "xlsx": "^0.17.0"
   },
   "devDependencies": {
     "@types/jest": "^25.2.3",
